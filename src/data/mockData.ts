@@ -89,8 +89,10 @@ export const webinars: Webinar[] = [
     attendees: 45,
     category: "Développement Web",
     status: "completed",
-    thumbnailUrl: "https://placehold.co/600x400/3b82f6/FFFFFF?text=React+D%C3%A9butants",
-    description: "Apprenez les fondamentaux de React, de la création de composants à la gestion d'état. Ce webinaire est conçu pour les développeurs ayant une connaissance de base en HTML, CSS et JavaScript."
+    thumbnailUrl:
+      "public/f64815e6-3df2-40f5-90df-32208f468511.jpeg",
+    description:
+      "Apprenez les fondamentaux de React, de la création de composants à la gestion d'état. Ce webinaire est conçu pour les développeurs ayant une connaissance de base en HTML, CSS et JavaScript.",
   },
   {
     id: "2",
@@ -102,8 +104,10 @@ export const webinars: Webinar[] = [
     attendees: 32,
     category: "Design Front-end",
     status: "live",
-    thumbnailUrl: "https://placehold.co/600x400/8b5cf6/FFFFFF?text=Tailwind+CSS",
-    description: "Découvrez les meilleures pratiques pour utiliser Tailwind CSS dans vos projets d'entreprise, avec des conseils pour l'organisation du code et l'optimisation des performances."
+    thumbnailUrl:
+      "public/tailwind.png",
+    description:
+      "Découvrez les meilleures pratiques pour utiliser Tailwind CSS dans vos projets d'entreprise, avec des conseils pour l'organisation du code et l'optimisation des performances.",
   },
   {
     id: "3",
@@ -115,8 +119,10 @@ export const webinars: Webinar[] = [
     attendees: 28,
     category: "Programmation",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/ec4899/FFFFFF?text=TypeScript+Avanc%C3%A9",
-    description: "Ce webinaire aborde les fonctionnalités avancées de TypeScript : génériques, types conditionnels, inférence de types et stratégies pour améliorer la qualité du code dans les grandes bases de code."
+    thumbnailUrl:
+      "public/typescriptAvancée.webp",
+    description:
+      "Ce webinaire aborde les fonctionnalités avancées de TypeScript : génériques, types conditionnels, inférence de types et stratégies pour améliorer la qualité du code dans les grandes bases de code.",
   },
   {
     id: "4",
@@ -128,8 +134,9 @@ export const webinars: Webinar[] = [
     attendees: 40,
     category: "Backend",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/10b981/FFFFFF?text=Node.js+API",
-    description: "Créez des API RESTful robustes avec Node.js et Express. Nous couvrirons la structure des routes, la validation des données, l'authentification et la documentation."
+    thumbnailUrl: "public/nodejsAPI.png",
+    description:
+      "Créez des API RESTful robustes avec Node.js et Express. Nous couvrirons la structure des routes, la validation des données, l'authentification et la documentation.",
   },
   {
     id: "5",
@@ -141,8 +148,10 @@ export const webinars: Webinar[] = [
     attendees: 35,
     category: "Développement Web",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/f59e0b/FFFFFF?text=React+Performance",
-    description: "Améliorez les performances de vos applications React avec des techniques avancées : memoization, code splitting, lazy loading, et optimisation du rendu."
+    thumbnailUrl:
+      "public/reactPerformance.jpeg",
+    description:
+      "Améliorez les performances de vos applications React avec des techniques avancées : memoization, code splitting, lazy loading, et optimisation du rendu.",
   },
   {
     id: "6",
@@ -154,8 +163,9 @@ export const webinars: Webinar[] = [
     attendees: 30,
     category: "API",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/8b5cf6/FFFFFF?text=GraphQL",
-    description: "Découvrez comment GraphQL peut remplacer les API REST traditionnelles avec un modèle plus efficace et flexible pour les requêtes de données."
+    thumbnailUrl: "public/graphql.png",
+    description:
+      "Découvrez comment GraphQL peut remplacer les API REST traditionnelles avec un modèle plus efficace et flexible pour les requêtes de données.",
   },
   {
     id: "7",
@@ -167,8 +177,10 @@ export const webinars: Webinar[] = [
     attendees: 25,
     category: "Qualité logicielle",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/ef4444/FFFFFF?text=React+Testing",
-    description: "Apprenez à mettre en place une stratégie de tests efficace pour vos applications React avec Jest et React Testing Library."
+    thumbnailUrl:
+      "public/reactTestingLibraire.jpeg",
+    description:
+      "Apprenez à mettre en place une stratégie de tests efficace pour vos applications React avec Jest et React Testing Library.",
   },
   {
     id: "8",
@@ -180,9 +192,11 @@ export const webinars: Webinar[] = [
     attendees: 20,
     category: "DevOps",
     status: "upcoming",
-    thumbnailUrl: "https://placehold.co/600x400/3b82f6/FFFFFF?text=GitHub+Actions",
-    description: "Automatisez vos workflows de développement avec GitHub Actions pour des déploiements fluides et sans erreur."
-  }
+    thumbnailUrl:
+      "public/githubActions.jpeg",
+    description:
+      "Automatisez vos workflows de développement avec GitHub Actions pour des déploiements fluides et sans erreur.",
+  },
 ];
 
 // Données mockées pour les webinaires à venir (version simplifiée)
@@ -191,26 +205,26 @@ export const upcomingWebinarsSimple: UpcomingWebinarSimple[] = [
     title: "Gestion de projet Agile",
     date: "22 Juin",
     time: "11:00",
-    presenter: "Nicolas Petit"
+    presenter: "Nicolas Petit",
   },
   {
     title: "UX/UI Design pour développeurs",
     date: "23 Juin",
     time: "14:30",
-    presenter: "Amélie Lefebvre"
+    presenter: "Amélie Lefebvre",
   },
   {
     title: "DevOps pour les startups",
     date: "24 Juin",
     time: "16:00",
-    presenter: "Pierre Moreau"
+    presenter: "Pierre Moreau",
   },
   {
     title: "Bases de données NoSQL",
     date: "27 Juin",
     time: "10:00",
-    presenter: "Camille Blanc"
-  }
+    presenter: "Camille Blanc",
+  },
 ];
 
 // Dates pour le calendrier des webinaires
@@ -219,7 +233,7 @@ export const webinarDates = [
   new Date(new Date().setDate(new Date().getDate() + 2)),
   new Date(new Date().setDate(new Date().getDate() + 5)),
   new Date(new Date().setDate(new Date().getDate() + 10)),
-  new Date(new Date().setDate(new Date().getDate() + 15))
+  new Date(new Date().setDate(new Date().getDate() + 15)),
 ];
 
 // Statistiques pour le tableau de bord
@@ -228,29 +242,29 @@ export const stats = [
     title: "Webinaires Totaux",
     value: "124",
     change: { value: "12%", positive: true },
-    icon: "Video"
+    icon: "Video",
   },
   {
     title: "Participants",
     value: "1,893",
     change: { value: "8%", positive: true },
     icon: "Users",
-    iconColor: "text-blue-500"
+    iconColor: "text-blue-500",
   },
   {
     title: "Sessions à venir",
     value: "18",
     change: { value: "2%", positive: false },
     icon: "Calendar",
-    iconColor: "text-indigo-500"
+    iconColor: "text-indigo-500",
   },
   {
     title: "Taux d'achèvement",
     value: "87%",
     change: { value: "5%", positive: true },
     icon: "TrendingUp",
-    iconColor: "text-green-500"
-  }
+    iconColor: "text-green-500",
+  },
 ];
 
 // Données mock pour la page Stagiaires
@@ -269,68 +283,77 @@ export const trainees: Trainee[] = [
     webinarsAttended: 12,
     totalWebinars: 15,
     enrollmentDate: "15/02/2023",
-    skills: ["HTML/CSS", "JavaScript", "React", "Node.js", "Express", "MongoDB"],
+    skills: [
+      "HTML/CSS",
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+    ],
     attendedWebinars: [
       {
         id: "1",
         title: "Introduction à React pour débutants",
         date: "12 Juin 2023",
         presenter: "Marie Dubois",
-        rating: 5
+        rating: 5,
       },
       {
         id: "2",
         title: "Maîtriser Tailwind CSS en entreprise",
         date: "15 Juin 2023",
         presenter: "Thomas Martin",
-        rating: 4
+        rating: 4,
       },
       {
         id: "3",
         title: "TypeScript Avancé pour les équipes de développement",
         date: "20 Juin 2023",
         presenter: "Julie Bernard",
-        rating: 5
-      }
+        rating: 5,
+      },
     ],
     experience: [
       {
         role: "Chef de produit marketing",
         company: "AgenceDigital",
         period: "Jan 2018 - Déc 2022",
-        description: "Gestion de campagnes marketing pour des clients du secteur tech, analyse de données et création de stratégies digitales."
+        description:
+          "Gestion de campagnes marketing pour des clients du secteur tech, analyse de données et création de stratégies digitales.",
       },
       {
         role: "Assistante marketing",
         company: "TechStart",
         period: "Juin 2016 - Déc 2017",
-        description: "Support aux opérations marketing, gestion des réseaux sociaux et organisation d'événements."
-      }
+        description:
+          "Support aux opérations marketing, gestion des réseaux sociaux et organisation d'événements.",
+      },
     ],
     education: [
       {
         degree: "Master en Marketing Digital",
         institution: "École de Commerce de Lyon",
-        period: "2014 - 2016"
+        period: "2014 - 2016",
       },
       {
         degree: "Licence en Communication",
         institution: "Université Lyon 2",
-        period: "2011 - 2014"
-      }
+        period: "2011 - 2014",
+      },
     ],
     certifications: [
       {
         name: "JavaScript - Les Fondamentaux",
         issuer: "OpenClassrooms",
-        date: "Mars 2023"
+        date: "Mars 2023",
       },
       {
         name: "React - Niveau Intermédiaire",
         issuer: "Codecademy",
-        date: "Mai 2023"
-      }
-    ]
+        date: "Mai 2023",
+      },
+    ],
   },
   {
     id: "2",
@@ -346,38 +369,46 @@ export const trainees: Trainee[] = [
     webinarsAttended: 8,
     totalWebinars: 12,
     enrollmentDate: "03/03/2023",
-    skills: ["Figma", "Adobe XD", "Sketch", "Wireframing", "Prototyping", "Design System"],
+    skills: [
+      "Figma",
+      "Adobe XD",
+      "Sketch",
+      "Wireframing",
+      "Prototyping",
+      "Design System",
+    ],
     attendedWebinars: [
       {
         id: "5",
         title: "Optimisation des performances React",
         date: "30 Juin 2023",
         presenter: "Sophie Moreau",
-        rating: 4
+        rating: 4,
       },
       {
         id: "7",
         title: "Tests automatisés avec Jest et React Testing Library",
         date: "10 Juillet 2023",
         presenter: "Clara Martin",
-        rating: 3
-      }
+        rating: 3,
+      },
     ],
     experience: [
       {
         role: "Stagiaire UI Designer",
         company: "Studio Design & Co",
         period: "Jan 2022 - Juin 2022",
-        description: "Création d'interfaces utilisateur pour applications mobiles et web, participation aux ateliers de conception UX."
-      }
+        description:
+          "Création d'interfaces utilisateur pour applications mobiles et web, participation aux ateliers de conception UX.",
+      },
     ],
     education: [
       {
         degree: "Bachelor en Design Numérique",
         institution: "École de Design de Paris",
-        period: "2019 - 2022"
-      }
-    ]
+        period: "2019 - 2022",
+      },
+    ],
   },
   {
     id: "3",
@@ -392,73 +423,81 @@ export const trainees: Trainee[] = [
     webinarsAttended: 10,
     totalWebinars: 10,
     enrollmentDate: "10/01/2023",
-    skills: ["SEO/SEA", "Google Analytics", "Content Marketing", "Social Media", "Email Marketing"],
+    skills: [
+      "SEO/SEA",
+      "Google Analytics",
+      "Content Marketing",
+      "Social Media",
+      "Email Marketing",
+    ],
     attendedWebinars: [
       {
         id: "4",
         title: "API RESTful avec Node.js et Express",
         date: "25 Juin 2023",
         presenter: "Alexandre Lefebvre",
-        rating: 5
+        rating: 5,
       },
       {
         id: "6",
         title: "Introduction à GraphQL",
         date: "5 Juillet 2023",
         presenter: "Marc Dubois",
-        rating: 5
+        rating: 5,
       },
       {
         id: "8",
         title: "Déploiement continu avec GitHub Actions",
         date: "15 Juillet 2023",
         presenter: "Antoine Bernard",
-        rating: 4
-      }
+        rating: 4,
+      },
     ],
     experience: [
       {
         role: "Responsable marketing junior",
         company: "E-commerce Solutions",
         period: "Sept 2020 - Présent",
-        description: "Élaboration et mise en œuvre de stratégies marketing digitales, analyse de performances et optimisation des campagnes."
+        description:
+          "Élaboration et mise en œuvre de stratégies marketing digitales, analyse de performances et optimisation des campagnes.",
       },
       {
         role: "Assistante marketing",
         company: "Retail Group",
         period: "Jan 2019 - Août 2020",
-        description: "Gestion des campagnes email, mise à jour du site web et analyse des statistiques de vente."
-      }
+        description:
+          "Gestion des campagnes email, mise à jour du site web et analyse des statistiques de vente.",
+      },
     ],
     education: [
       {
         degree: "Master en Marketing Digital",
         institution: "IAE Bordeaux",
-        period: "2017 - 2019"
+        period: "2017 - 2019",
       },
       {
         degree: "Licence en Commerce",
         institution: "Université de Bordeaux",
-        period: "2014 - 2017"
-      }
+        period: "2014 - 2017",
+      },
     ],
     certifications: [
       {
         name: "Google Analytics Individual Qualification",
         issuer: "Google",
-        date: "Fév 2023"
+        date: "Fév 2023",
       },
       {
         name: "Certification SEO Avancé",
         issuer: "SEMrush Academy",
-        date: "Avr 2023"
+        date: "Avr 2023",
       },
       {
         name: "Social Media Marketing",
         issuer: "HubSpot Academy",
-        date: "Mai 2023"
-      }
-    ]
+        date: "Mai 2023",
+      },
+    ],
   },
   {
     id: "4",
@@ -476,9 +515,9 @@ export const trainees: Trainee[] = [
         title: "Maîtriser Tailwind CSS en entreprise",
         date: "15 Juin 2023",
         presenter: "Thomas Martin",
-        rating: 4
-      }
-    ]
+        rating: 4,
+      },
+    ],
   },
   {
     id: "5",
@@ -488,7 +527,7 @@ export const trainees: Trainee[] = [
     progress: 0,
     status: "inactive",
     webinarsAttended: 0,
-    totalWebinars: 8
+    totalWebinars: 8,
   },
   {
     id: "6",
@@ -509,9 +548,9 @@ export const trainees: Trainee[] = [
         title: "Introduction à React pour débutants",
         date: "12 Juin 2023",
         presenter: "Marie Dubois",
-        rating: 5
-      }
-    ]
+        rating: 5,
+      },
+    ],
   },
   {
     id: "7",
@@ -533,48 +572,49 @@ export const trainees: Trainee[] = [
         title: "TypeScript Avancé pour les équipes de développement",
         date: "20 Juin 2023",
         presenter: "Julie Bernard",
-        rating: 4
+        rating: 4,
       },
       {
         id: "5",
         title: "Optimisation des performances React",
         date: "30 Juin 2023",
         presenter: "Sophie Moreau",
-        rating: 5
-      }
+        rating: 5,
+      },
     ],
     experience: [
       {
         role: "Stagiaire Data Analyst",
         company: "Tech Solutions",
         period: "Juin 2022 - Déc 2022",
-        description: "Analyse de données clients, création de dashboards et rapports pour l'équipe marketing."
-      }
+        description:
+          "Analyse de données clients, création de dashboards et rapports pour l'équipe marketing.",
+      },
     ],
     education: [
       {
         degree: "Master en Science des Données",
         institution: "École d'Ingénieurs de Lille",
-        period: "2020 - 2022"
+        period: "2020 - 2022",
       },
       {
         degree: "Licence en Mathématiques Appliquées",
         institution: "Université de Lille",
-        period: "2017 - 2020"
-      }
+        period: "2017 - 2020",
+      },
     ],
     certifications: [
       {
         name: "Deep Learning Specialization",
         issuer: "Coursera",
-        date: "Déc 2022"
+        date: "Déc 2022",
       },
       {
         name: "Machine Learning Engineer",
         issuer: "DataCamp",
-        date: "Mar 2023"
-      }
-    ]
+        date: "Mar 2023",
+      },
+    ],
   },
   {
     id: "8",
@@ -590,74 +630,82 @@ export const trainees: Trainee[] = [
     webinarsAttended: 12,
     totalWebinars: 12,
     enrollmentDate: "05/12/2022",
-    skills: ["Pentesting", "Analyse de vulnérabilité", "Cryptographie", "Forensic", "Sécurité réseau"],
+    skills: [
+      "Pentesting",
+      "Analyse de vulnérabilité",
+      "Cryptographie",
+      "Forensic",
+      "Sécurité réseau",
+    ],
     attendedWebinars: [
       {
         id: "4",
         title: "API RESTful avec Node.js et Express",
         date: "25 Juin 2023",
         presenter: "Alexandre Lefebvre",
-        rating: 5
+        rating: 5,
       },
       {
         id: "6",
         title: "Introduction à GraphQL",
         date: "5 Juillet 2023",
         presenter: "Marc Dubois",
-        rating: 4
+        rating: 4,
       },
       {
         id: "7",
         title: "Tests automatisés avec Jest et React Testing Library",
         date: "10 Juillet 2023",
         presenter: "Clara Martin",
-        rating: 5
-      }
+        rating: 5,
+      },
     ],
     experience: [
       {
         role: "Analyste en cybersécurité",
         company: "SecureNet",
         period: "Jan 2019 - Présent",
-        description: "Surveillance de la sécurité des systèmes, analyse des incidents et mise en place de mesures correctives."
+        description:
+          "Surveillance de la sécurité des systèmes, analyse des incidents et mise en place de mesures correctives.",
       },
       {
         role: "Administrateur système",
         company: "IT Solutions",
         period: "Mar 2016 - Déc 2018",
-        description: "Gestion des infrastructures réseau, maintenance des serveurs et support technique aux utilisateurs."
-      }
+        description:
+          "Gestion des infrastructures réseau, maintenance des serveurs et support technique aux utilisateurs.",
+      },
     ],
     education: [
       {
         degree: "Master en Sécurité des Systèmes d'Information",
         institution: "ISEN Nantes",
-        period: "2014 - 2016"
+        period: "2014 - 2016",
       },
       {
         degree: "Licence en Informatique",
         institution: "Université de Nantes",
-        period: "2011 - 2014"
-      }
+        period: "2011 - 2014",
+      },
     ],
     certifications: [
       {
         name: "Certified Ethical Hacker (CEH)",
         issuer: "EC-Council",
-        date: "Jan 2021"
+        date: "Jan 2021",
       },
       {
         name: "CISSP",
         issuer: "ISC²",
-        date: "Nov 2022"
+        date: "Nov 2022",
       },
       {
         name: "CompTIA Security+",
         issuer: "CompTIA",
-        date: "Mar 2019"
-      }
-    ]
-  }
+        date: "Mar 2019",
+      },
+    ],
+  },
 ];
 
 // Données mock pour la page Rapports
