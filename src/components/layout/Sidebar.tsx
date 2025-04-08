@@ -59,26 +59,24 @@ export function Sidebar({ className }: SidebarProps) {
   const SidebarContent = () => (
     <>
       <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
-        <Link to="/">
         <div className={cn("flex items-center gap-3", collapsed ? "justify-center w-full" : "")}>
           {!collapsed && (
-            <div className="h-14 w-14 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary flex items-center justify-center shadow-inner">
-              <img src="public/f64815e6-3df2-40f5-90df-32208f468511.jpeg" />
+            <div className="h-10 w-10 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary flex items-center justify-center shadow-inner">
+              <Video className="h-6 w-6 text-white" aria-hidden="true" />
             </div>
           )}
           {!collapsed && (
-            <span className="text-xl font-bold text-sidebar-foreground text-blue-900">TalentUp</span>
+            <span className="text-xl font-semibold text-sidebar-foreground">TalentUp</span>
           )}
         </div>
-        </Link>
         
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className={cn("text-sidebar-foreground", collapsed ? "hidden" : "")}
+          className={cn("text-sidebar-foreground", collapsed ? "ml-auto" : "")}
         >
-          <Menu className="h-4 w-4" />
+          <Menu className="h-5 w-5" />
         </Button>
       </div>
 
@@ -96,7 +94,7 @@ export function Sidebar({ className }: SidebarProps) {
                 collapsed ? "justify-center" : "justify-start"
               )}
             >
-               <item.icon className={cn(
+              <item.icon className={cn(
                 "h-5 w-5",
                 collapsed ? "mx-auto" : "mr-3",
                 isActive ? "text-primary" : ""
@@ -118,7 +116,7 @@ export function Sidebar({ className }: SidebarProps) {
         className="fixed top-4 left-4 z-50 md:hidden bg-background/80 backdrop-blur-sm"
       >
         <Menu className="h-5 w-5" />
-        <span className="sr-only">Menu</span>
+        <span className="sr-only">Toggle Menu</span>
       </Button>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
