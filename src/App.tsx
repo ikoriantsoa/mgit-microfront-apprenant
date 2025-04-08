@@ -22,9 +22,9 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/webinars" element={<WebinarList />} />
-            <Route path="/webinars/:id" element={<WebinarDetail />} />
-            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/webinaires" element={<WebinarList />} />
+            <Route path="/webinaire/:id" element={<WebinarDetail />} />
+            <Route path="/calendrier" element={<CalendarPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

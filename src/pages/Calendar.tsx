@@ -205,7 +205,7 @@ const CalendarPage = () => {
 
         {/* Webinaires à venir */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold"> de thème de webinaire</h2>
+          <h2 className="text-xl font-semibold">Suggestion de thème de webinaire</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {webinars
               .filter((webinar) => webinar.status === "upcoming")

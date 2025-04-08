@@ -218,21 +218,6 @@ const WebinarDetail = () => {
                   "Aucune description disponible pour ce webinaire."}
               </p>
             </div>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button variant="outline" size="sm" className="flex items-center">
-                <Share2 className="mr-2 h-4 w-4" />
-                Partager
-              </Button>
-              <Button variant="outline" size="sm" className="flex items-center">
-                <Download className="mr-2 h-4 w-4" />
-                Ressources
-              </Button>
-              <Button variant="outline" size="sm" className="flex items-center">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Discussion
-              </Button>
-            </div>
           </div>
 
           {/* Informations latérales */}

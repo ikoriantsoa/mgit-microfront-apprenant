@@ -1,5 +1,4 @@
-
-import { Bell, LogOut, User, Settings, ChevronDown } from "lucide-react";
+import { Bell, LogOut, User, Settings, ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,21 +8,35 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export function Header() {
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10">
       <div className="flex h-16 items-center px-4 md:px-6">
-        <div className="flex items-center gap-2 lg:gap-4 w-full">
-          <div className="w-8 md:hidden"></div>
-          
-          <div className="md:flex relative w-full max-w-sm lg:max-w-lg text-sm font-bold lg:text-2xl">
-            <span className="text-red-950">MGIT Service - Le partage c'est notre ADN</span>
+        {/* Conteneur principal */}
+        <div className="flex items-center justify-between w-full">
+          {/* Bouton hamburger pour mobile */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => console.log("Sidebar toggle")}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+
+          {/* Texte centré */}
+          <div className="flex items-center justify-center flex-grow mx-4">
+            <span className="text-red-950 text-sm font-bold lg:text-2xl">
+              MGIT Service - Le partage c'est notre ADN
+            </span>
           </div>
-          
-          <div className="flex items-center gap-2 ml-auto">
+
+          {/* Actions à droite */}
+          <div className="flex items-center gap-2">
+            {/* Notifications */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative">
@@ -37,13 +50,19 @@ export function Header() {
                 <DropdownMenuItem className="cursor-pointer">
                   <div className="flex flex-col space-y-1">
                     <span className="font-medium">Nouveau webinaire ajouté</span>
-                    <span className="text-xs text-muted-foreground">Il y a 5 minutes</span>
+                    <span className="text-xs text-muted-foreground">
+                      Il y a 5 minutes
+                    </span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">
                   <div className="flex flex-col space-y-1">
-                    <span className="font-medium">Rappel: Webinaire à venir</span>
-                    <span className="text-xs text-muted-foreground">Il y a 1 heure</span>
+                    <span className="font-medium">
+                      Rappel: Webinaire à venir
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      Il y a 1 heure
+                    </span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -52,9 +71,10 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
             
-            <ThemeToggle />
-            
+
+            {/* Menu utilisateur */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-2 cursor-pointer">

@@ -3,7 +3,6 @@ import { fr } from "date-fns/locale";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -69,7 +68,7 @@ export function WebinarCard({
   
   // Naviguer vers la page détaillée quand on clique sur la carte
   const handleCardClick = () => {
-    navigate(`/webinars/${id}`);
+    navigate(`/webinaire/${id}`);
     speakWebinar();
   };
 
@@ -120,7 +119,7 @@ export function WebinarCard({
 
     try {
       const response = await fetch(
-        "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL", // Sarah voice
+        "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
         {
           method: "POST",
           headers: {
