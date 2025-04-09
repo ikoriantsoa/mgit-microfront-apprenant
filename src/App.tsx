@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +9,8 @@ import NotFound from "./pages/NotFound";
 import WebinarList from "./pages/WebinarList";
 import WebinarDetail from "./pages/WebinarDetail";
 import CalendarPage from "./pages/Calendar";
+import PrivateRoute from "./keycloak/PrivateRoute";
+import Unhauthorized from "./pages/Unhauthorized";
 
 const queryClient = new QueryClient();
 
@@ -21,10 +22,39 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/webinaires" element={<WebinarList />} />
-            <Route path="/webinaire/:id" element={<WebinarDetail />} />
-            <Route path="/calendrier" element={<CalendarPage />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute roles={["apprenant", "admin"]}>
+                  <Index />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/webinaires"
+              element={
+                <PrivateRoute roles={["apprenant", "admin"]}>
+                  <WebinarList />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/webinaire/:id"
+              element={
+                <PrivateRoute roles={["apprenant", "admin"]}>
+                  <WebinarDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendrier"
+              element={
+                <PrivateRoute roles={["apprenant", "admin"]}>
+                  <CalendarPage />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/unauthorized" element={<Unhauthorized />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
