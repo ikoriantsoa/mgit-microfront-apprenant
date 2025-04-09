@@ -10,6 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import keycloak from "@/keycloak/keycloak";
 
 export function Header() {
   return (
@@ -97,10 +98,12 @@ export function Header() {
                   Paramètres
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <button onClick={() => keycloak.logout({redirectUri: window.location.origin})}>
                 <DropdownMenuItem className="cursor-pointer text-destructive">
                   <LogOut className="mr-2 h-4 w-4" />
                   Déconnexion
                 </DropdownMenuItem>
+                </button>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
