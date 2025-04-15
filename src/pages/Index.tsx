@@ -69,10 +69,10 @@ const Dashboard = () => {
           </div>
           <div className="flex gap-2">
             <Button asChild>
-              <Link to="/webinars">Tous les webinaires</Link>
+              <Link to="/webinaires">Tous les webinaires</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/calendar">Calendrier</Link>
+              <Link to="/calendrier">Calendrier</Link>
             </Button>
           </div>
         </div>
@@ -82,7 +82,7 @@ const Dashboard = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Webinaires récents</h2>
               <Button variant="link" asChild>
-                <Link to="/webinars">Voir tous les webinaires</Link>
+                <Link to="/webinaires">Voir tous les webinaires</Link>
               </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
