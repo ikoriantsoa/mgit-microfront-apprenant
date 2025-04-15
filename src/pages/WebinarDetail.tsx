@@ -187,25 +187,6 @@ const WebinarDetail = () => {
               <h1 className="text-3xl font-bold tracking-tight mt-2">
                 {webinar.title}
               </h1>
-
-              <div className="flex flex-wrap items-center gap-6 mt-4">
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">{webinar.date}</span>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">
-                    {webinar.time} · {webinar.duration}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">
-                    {webinar.attendees} participants
-                  </span>
-                </div>
-              </div>
             </div>
 
             <Separator className="my-6" />
@@ -248,10 +229,7 @@ const WebinarDetail = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Participer au webinaire</CardTitle>
-                <CardDescription>
-                  Rejoignez ce webinaire et accédez au contenu
-                </CardDescription>
+                <CardTitle>Regarder le webinaire</CardTitle>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" onClick={togglePlay}>

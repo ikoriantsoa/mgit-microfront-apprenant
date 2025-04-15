@@ -2,16 +2,25 @@
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { format } from "date-fns";
+import { format, isBefore, subDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import { webinarDates } from "@/data/mockData";
+import { Button } from "@/components/ui/button";
 
 export function WebinarCalendar() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   
+  // Créer une date pour hier afin de désactiver les dates passées
+  const yesterday = subDays(new Date(), 1);
+  
+  // Fonction qui désactive les dates avant hier
+  const disabledDays = (day: Date) => {
+    return isBefore(day, yesterday);
+  };
+  
   return (
     <Card className="h-full">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle>Calendrier des webinaires</CardTitle>
       </CardHeader>
       <CardContent>
@@ -31,6 +40,7 @@ export function WebinarCalendar() {
               color: "hsl(var(--primary))"
             }
           }}
+          disabled={disabledDays}
         />
         
         <div className="mt-4 border-t pt-4">
@@ -55,7 +65,7 @@ export function WebinarCalendar() {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Aucun webinaire ce jour</p>
+              <p className="text-sm text-muted-foreground">Aucun webinaire prévu ce jour</p>
             )
           }
         </div>

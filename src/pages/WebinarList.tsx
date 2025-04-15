@@ -1,6 +1,7 @@
 
 import { Layout } from "@/components/layout/Layout";
 import { WebinarCard } from "@/components/webinar/WebinarCard";
+import { WebinarCardSkeleton } from "@/components/webinar/WebinarCardSkeleton";
 import { useState } from "react";
 import { webinars } from "@/data/mockData";
 import { Input } from "@/components/ui/input";
@@ -24,42 +25,65 @@ import {
 } from "@/components/ui/sheet";
 import { WebinarFormModal } from "@/components/webinar/WebinarFormModal";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+
+// Simulation d'une fonction d'API
+const fetchWebinars = async () => {
+  // Simuler un délai réseau
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  return webinars;
+};
 
 const WebinarList = () => {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [webinarsList, setWebinarsList] = useState(webinars);
   const [webinarToEdit, setWebinarToEdit] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const isMobile = useIsMobile();
   
+  // Utiliser react-query pour charger les webinaires
+  const { data: webinarsList, isLoading, isError } = useQuery({
+    queryKey: ['webinars'],
+    queryFn: fetchWebinars
+  });
+
+  // État local pour les modifications après le chargement initial
+  const [localWebinarsList, setLocalWebinarsList] = useState(webinars);
+
+  // Mettre à jour la liste locale quand les données sont chargées
+  useEffect(() => {
+    if (webinarsList) {
+      setLocalWebinarsList(webinarsList);
+    }
+  }, [webinarsList]);
+  
   // Obtenir les catégories uniques pour le filtre
-  const categories = Array.from(new Set(webinarsList.map(webinar => webinar.category)));
+  const categories = Array.from(new Set((webinarsList || []).map(webinar => webinar.category)));
   
   // Filtrer les webinaires en fonction des critères de recherche
-  const filteredWebinars = webinarsList.filter(webinar => {
+  const filteredWebinars = localWebinarsList ? localWebinarsList.filter(webinar => {
     const matchesSearch = webinar.title.toLowerCase().includes(search.toLowerCase()) || 
                           webinar.presenter.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter === "all" || webinar.category === categoryFilter;
     const matchesStatus = statusFilter === "all" || webinar.status === statusFilter;
     
     return matchesSearch && matchesCategory && matchesStatus;
-  });
+  }) : [];
 
   const handleAddWebinar = (newWebinar) => {
     const webinarWithId = {
       ...newWebinar,
       id: `webinar-${Date.now()}`,
     };
-    setWebinarsList([...webinarsList, webinarWithId]);
+    setLocalWebinarsList([...localWebinarsList, webinarWithId]);
     toast.success("Webinaire ajouté avec succès!");
     setIsFormOpen(false);
   };
 
   const handleUpdateWebinar = (updatedWebinar) => {
-    setWebinarsList(
-      webinarsList.map((webinar) => 
+    setLocalWebinarsList(
+      localWebinarsList.map((webinar) => 
         webinar.id === updatedWebinar.id ? updatedWebinar : webinar
       )
     );
@@ -69,7 +93,7 @@ const WebinarList = () => {
   };
 
   const handleDeleteWebinar = (id) => {
-    setWebinarsList(webinarsList.filter((webinar) => webinar.id !== id));
+    setLocalWebinarsList(localWebinarsList.filter((webinar) => webinar.id !== id));
     toast.success("Webinaire supprimé avec succès!");
   };
 
@@ -102,21 +126,6 @@ const WebinarList = () => {
           </SelectContent>
         </Select>
       </div>
-      <div>
-        <label htmlFor="status-filter" className="text-sm font-medium mb-2 block">Statut</label>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger id="status-filter" className="w-full">
-            <SelectValue placeholder="Statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
-            <SelectItem value="upcoming">À venir</SelectItem>
-            <SelectItem value="live">En direct</SelectItem>
-            <SelectItem value="completed">Terminé</SelectItem>
-            <SelectItem value="cancelled">Annulé</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
       <Button 
         variant="outline" 
         className="w-full mt-4"
@@ -138,11 +147,11 @@ const WebinarList = () => {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Liste des webinaires</h1>
             <p className="text-muted-foreground">
-            Partage ton talent et monte en compétences avec les autres apprenants.
+              Partage ton talent et monte en compétences avec les autres apprenants.
             </p>
           </div>
           <Button onClick={openAddForm} className="hidden sm:flex">
-            <Plus className="h-4 w-4 mr-2" /> Déposez un webinaire
+            <Plus className="h-4 w-4 mr-2" /> Déposer un webinaire
           </Button>
         </div>
 
@@ -160,6 +169,25 @@ const WebinarList = () => {
           
           {isMobile ? (
             <div className="flex justify-between">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="flex-1 mr-2">
+                    <SlidersHorizontal className="h-4 w-4 mr-2" /> Filtres
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[80%] rounded-t-xl">
+                  <SheetHeader>
+                    <SheetTitle>Filtrer les webinaires</SheetTitle>
+                    <SheetDescription>
+                      Affinez votre recherche en utilisant les filtres ci-dessous.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="py-6">
+                    <FiltersContent />
+                  </div>
+                </SheetContent>
+              </Sheet>
+              
               <Button 
                 variant="outline" 
                 className="flex-1 mr-2"
@@ -203,7 +231,30 @@ const WebinarList = () => {
         </div>
         
         {/* Résultats */}
-        {filteredWebinars.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {Array(6).fill(0).map((_, index) => (
+              <WebinarCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : isError ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="h-14 w-14 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
+              <Search className="h-6 w-6 text-destructive" />
+            </div>
+            <h3 className="font-semibold text-lg">Erreur de chargement</h3>
+            <p className="text-muted-foreground max-w-md mt-2">
+              Une erreur s'est produite lors du chargement des webinaires. Veuillez réessayer.
+            </p>
+            <Button 
+              variant="outline" 
+              className="mt-4"
+              onClick={() => window.location.reload()}
+            >
+              Réessayer
+            </Button>
+          </div>
+        ) : filteredWebinars.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredWebinars.map((webinar) => (
               <WebinarCard 
@@ -237,5 +288,8 @@ const WebinarList = () => {
     </Layout>
   );
 };
+
+// Ajout de l'import manquant
+import { useEffect } from 'react';
 
 export default WebinarList;
