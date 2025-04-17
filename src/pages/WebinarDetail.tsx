@@ -205,30 +205,6 @@ const WebinarDetail = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Intervenant</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center space-x-4">
-                  <Avatar className="h-14 w-14">
-                    <AvatarImage
-                      src={`https://i.pravatar.cc/150?u=${webinar.presenter}`}
-                    />
-                    <AvatarFallback>
-                      {webinar.presenter.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{webinar.presenter}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {webinar.category}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
                 <CardTitle>Regarder le webinaire</CardTitle>
               </CardHeader>
               <CardContent>
@@ -265,9 +241,6 @@ const WebinarDetail = () => {
                       <div className="overflow-hidden">
                         <p className="font-medium text-sm line-clamp-1">
                           {relatedWebinar.title}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {relatedWebinar.date}
                         </p>
                       </div>
                     </div>
