@@ -1,75 +1,159 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { WebinarCard } from "@/components/webinar/WebinarCard";
 import { useState } from "react";
-import { webinars } from "@/data/mockData";
 import { Input } from "@/components/ui/input";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Filter, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { WebinarFormModal } from "@/components/webinar/WebinarFormModal";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Données mockées fournies
+const mockWebinars = [
+  {
+    id: "1",
+    title: "Introduction à React pour débutants",
+    category: "Développement Web",
+    thumbnailUrl: "public/f64815e6-3df2-40f5-90df-32208f468511.jpeg",
+    description:
+      "Apprenez les fondamentaux de React, de la création de composants à la gestion d'état.",
+  },
+  {
+    id: "2",
+    title: "Maîtriser Tailwind CSS en entreprise",
+    category: "Design Front-end",
+    thumbnailUrl: "public/tailwind.png",
+    description:
+      "Découvrez les meilleures pratiques pour utiliser Tailwind CSS dans vos projets d'entreprise, avec des conseils pour l'organisation du code et l'optimisation des performances.",
+  },
+  {
+    id: "3",
+    title: "TypeScript Avancé pour les équipes de développement",
+    category: "Programmation",
+    thumbnailUrl: "public/typescriptAvancée.webp",
+    description:
+      "Ce webinaire aborde les fonctionnalités avancées de TypeScript : génériques, types conditionnels, inférence de types et stratégies pour améliorer la qualité du code dans les grandes bases de code.",
+  },
+  {
+    id: "4",
+    title: "API RESTful avec Node.js et Express",
+    category: "Backend",
+    thumbnailUrl: "public/nodejsAPI.png",
+    description:
+      "Créez des API RESTful robustes avec Node.js et Express. Nous couvrirons la structure des routes, la validation des données, l'authentification et la documentation.",
+  },
+  {
+    id: "5",
+    title: "Optimisation des performances React",
+    category: "Développement Web",
+    thumbnailUrl: "public/reactPerformance.jpeg",
+    description:
+      "Améliorez les performances de vos applications React avec des techniques avancées : memoization, code splitting, lazy loading, et optimisation du rendu.",
+  },
+  {
+    id: "6",
+    title: "Introduction à GraphQL",
+    category: "API",
+    thumbnailUrl: "public/graphql.png",
+    description:
+      "Découvrez comment GraphQL peut remplacer les API REST traditionnelles avec un modèle plus efficace et flexible pour les requêtes de données.",
+  },
+  {
+    id: "7",
+    title: "Tests automatisés avec Jest et React Testing Library",
+    category: "Qualité logicielle",
+    thumbnailUrl: "public/reactTestingLibraire.jpeg",
+    description:
+      "Apprenez à mettre en place une stratégie de tests efficace pour vos applications React avec Jest et React Testing Library.",
+  },
+  {
+    id: "8",
+    title: "Déploiement continu avec GitHub Actions",
+    category: "DevOps",
+    thumbnailUrl: "public/githubActions.jpeg",
+    description:
+      "Automatisez vos workflows de développement avec GitHub Actions pour des déploiements fluides et sans erreur.",
+  },
+];
+
+// Fonction simulant un appel API fictif
+const fetchWebinars = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simuler un délai réseau
+  return mockWebinars; // Retourner les données mockées
+};
 
 const WebinarList = () => {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [webinarsList, setWebinarsList] = useState(webinars);
   const [webinarToEdit, setWebinarToEdit] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const isMobile = useIsMobile();
-  
+
+  // Utilisation de React Query pour récupérer les webinaires
+  const {
+    data: webinarsList = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["webinars"],
+    queryFn: fetchWebinars,
+  });
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-center space-y-4">
+        <img src="/error-icon.png" alt="Erreur" className="w-20 h-20" />
+        <h2 className="text-xl font-semibold">
+          Erreur lors du chargement des webinaires.
+        </h2>
+        <p className="text-muted-foreground">
+          Veuillez réessayer plus tard ou vérifier votre connexion.
+        </p>
+      </div>
+    );
+  }
+
   // Obtenir les catégories uniques pour le filtre
-  const categories = Array.from(new Set(webinarsList.map(webinar => webinar.category)));
-  
+  const categories = Array.from(
+    new Set(webinarsList.map((webinar) => webinar.category))
+  );
+
   // Filtrer les webinaires en fonction des critères de recherche
-  const filteredWebinars = webinarsList.filter(webinar => {
-    const matchesSearch = webinar.title.toLowerCase().includes(search.toLowerCase()) || 
-                          webinar.presenter.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || webinar.category === categoryFilter;
-    const matchesStatus = statusFilter === "all" || webinar.status === statusFilter;
-    
+  const filteredWebinars = webinarsList.filter((webinar) => {
+    const matchesSearch = webinar.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesCategory =
+      categoryFilter === "all" || webinar.category === categoryFilter;
+    const matchesStatus = statusFilter === "all";
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
   const handleAddWebinar = (newWebinar) => {
-    const webinarWithId = {
-      ...newWebinar,
-      id: `webinar-${Date.now()}`,
-    };
-    setWebinarsList([...webinarsList, webinarWithId]);
+    console.log("Nouveau webinaire ajouté :", newWebinar);
     toast.success("Webinaire ajouté avec succès!");
     setIsFormOpen(false);
   };
 
   const handleUpdateWebinar = (updatedWebinar) => {
-    setWebinarsList(
-      webinarsList.map((webinar) => 
-        webinar.id === updatedWebinar.id ? updatedWebinar : webinar
-      )
-    );
-    setWebinarToEdit(null);
+    console.log("Webinaire mis à jour :", updatedWebinar);
     toast.success("Webinaire mis à jour avec succès!");
     setIsFormOpen(false);
   };
 
   const handleDeleteWebinar = (id) => {
-    setWebinarsList(webinarsList.filter((webinar) => webinar.id !== id));
+    console.log("Webinaire supprimé :", id);
     toast.success("Webinaire supprimé avec succès!");
   };
 
@@ -83,62 +167,18 @@ const WebinarList = () => {
     setIsFormOpen(true);
   };
 
-  // Composant pour les filtres
-  const FiltersContent = () => (
-    <div className="space-y-4">
-      <div>
-        <label htmlFor="category-filter" className="text-sm font-medium mb-2 block">Catégorie</label>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger id="category-filter" className="w-full">
-            <SelectValue placeholder="Catégorie" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Toutes les catégories</SelectItem>
-            {categories.map((category, index) => (
-              <SelectItem key={index} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <label htmlFor="status-filter" className="text-sm font-medium mb-2 block">Statut</label>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger id="status-filter" className="w-full">
-            <SelectValue placeholder="Statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
-            <SelectItem value="upcoming">À venir</SelectItem>
-            <SelectItem value="live">En direct</SelectItem>
-            <SelectItem value="completed">Terminé</SelectItem>
-            <SelectItem value="cancelled">Annulé</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <Button 
-        variant="outline" 
-        className="w-full mt-4"
-        onClick={() => {
-          setSearch("");
-          setCategoryFilter("all");
-          setStatusFilter("all");
-        }}
-      >
-        <Filter className="h-4 w-4 mr-2" /> Réinitialiser
-      </Button>
-    </div>
-  );
-
   return (
     <Layout>
       <div className="space-y-6 animate-fade-in">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Liste des webinaires</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+              Liste des webinaires
+            </h1>
             <p className="text-muted-foreground">
-            Partage ton talent et monte en compétences avec les autres apprenants.
+              Partage ton talent et monte en compétences avec les autres
+              apprenants.
             </p>
           </div>
           <Button onClick={openAddForm} className="hidden sm:flex">
@@ -146,22 +186,21 @@ const WebinarList = () => {
           </Button>
         </div>
 
-        {/* Filtres - Version Mobile */}
+        {/* Filtres */}
         <div className="flex flex-col gap-4">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Rechercher un webinaire..." 
+            <Input
+              placeholder="Rechercher un webinaire..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10"
             />
           </div>
-          
           {isMobile ? (
             <div className="flex justify-between">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="flex-1 mr-2"
                 onClick={() => {
                   setSearch("");
@@ -171,7 +210,6 @@ const WebinarList = () => {
               >
                 Réinitialiser
               </Button>
-
               <Button onClick={openAddForm} className="flex-shrink-0">
                 <Plus className="h-4 w-4" />
               </Button>
@@ -191,24 +229,33 @@ const WebinarList = () => {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline" onClick={() => {
-                setSearch("");
-                setCategoryFilter("all");
-                setStatusFilter("all");
-              }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearch("");
+                  setCategoryFilter("all");
+                  setStatusFilter("all");
+                }}
+              >
                 Réinitialiser
               </Button>
             </div>
           )}
         </div>
-        
+
         {/* Résultats */}
-        {filteredWebinars.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[...Array(6)].map((_, index) => (
+              <Skeleton key={index} className="h-[200px] rounded-lg" />
+            ))}
+          </div>
+        ) : filteredWebinars.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredWebinars.map((webinar) => (
-              <WebinarCard 
-                key={webinar.id} 
-                {...webinar} 
+              <WebinarCard
+                key={webinar.id}
+                {...webinar}
                 onEdit={() => openEditForm(webinar)}
                 onDelete={() => handleDeleteWebinar(webinar.id)}
               />
@@ -221,14 +268,15 @@ const WebinarList = () => {
             </div>
             <h3 className="font-semibold text-lg">Aucun webinaire trouvé</h3>
             <p className="text-muted-foreground max-w-md mt-2">
-              Aucun webinaire ne correspond à vos critères de recherche. Essayez d'ajuster vos filtres.
+              Aucun webinaire ne correspond à vos critères de recherche. Essayez
+              d'ajuster vos filtres.
             </p>
           </div>
         )}
       </div>
 
       {/* Modal pour ajouter/éditer un webinaire */}
-      <WebinarFormModal 
+      <WebinarFormModal
         isOpen={isFormOpen}
         setIsOpen={setIsFormOpen}
         webinar={webinarToEdit}
