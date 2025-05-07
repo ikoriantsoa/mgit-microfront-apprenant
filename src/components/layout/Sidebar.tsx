@@ -67,7 +67,7 @@ export function Sidebar({ className }: SidebarProps) {
         <Link to="/">
           <div
             className={cn(
-              "flex items-center gap-3",
+              " items-center gap-3",
               collapsed && !isMobile ? "justify-center w-full" : ""
             )}
           >

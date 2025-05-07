@@ -14,7 +14,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Upload, Tag, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { useMutation } from "@tanstack/react-query";
 
 interface WebinarFormModalProps {
@@ -36,10 +42,13 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
   // Mutation pour créer un webinaire
   const { mutate: createWebinar, isLoading } = useMutation({
     mutationFn: async (formDataToSend: FormData) => {
-      const response = await fetch("https://votre-api.com/webinars", {
-        method: "POST",
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        "http://localhost:3000/talentApprenant/createWebinaire",
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Erreur lors de la création du webinaire.");
@@ -57,7 +66,9 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
     },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -101,15 +112,15 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
 
     // Créer un objet FormData
     const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
+    formDataToSend.append("titre", formData.title);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("category", formData.category);
+    formDataToSend.append("categorie", formData.category);
 
     if (imageFile) {
       formDataToSend.append("image", imageFile);
     }
     if (videoFile) {
-      formDataToSend.append("video", videoFile);
+      formDataToSend.append("source", videoFile);
     }
 
     // Appeler la mutation pour envoyer les données à l'API
@@ -146,7 +157,10 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
               </div>
               <div className="grid gap-3">
                 <div className="grid gap-1.5">
-                  <Label htmlFor="title" className="font-medium flex items-center gap-1.5">
+                  <Label
+                    htmlFor="title"
+                    className="font-medium flex items-center gap-1.5"
+                  >
                     <Tag className="h-4 w-4 text-primary" />
                     Titre du webinaire
                   </Label>
@@ -160,7 +174,10 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
                   />
                 </div>
                 <div className="grid gap-1.5">
-                  <Label htmlFor="description" className="font-medium flex items-center gap-1.5">
+                  <Label
+                    htmlFor="description"
+                    className="font-medium flex items-center gap-1.5"
+                  >
                     <Tag className="h-4 w-4 text-primary" />
                     Description
                   </Label>
@@ -175,7 +192,10 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
                   />
                 </div>
                 <div className="grid gap-1.5">
-                  <Label htmlFor="category" className="font-medium flex items-center gap-1.5">
+                  <Label
+                    htmlFor="category"
+                    className="font-medium flex items-center gap-1.5"
+                  >
                     <Briefcase className="h-4 w-4 text-primary" />
                     Catégorie
                   </Label>
@@ -188,16 +208,25 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
                       }))
                     }
                   >
-                    <SelectTrigger id="category" className="border-input/60 focus:ring-primary/20 transition-all">
+                    <SelectTrigger
+                      id="category"
+                      className="border-input/60 focus:ring-primary/20 transition-all"
+                    >
                       <SelectValue placeholder="Sélectionnez une catégorie" />
                     </SelectTrigger>
                     <SelectContent className="bg-background/95 backdrop-blur-sm">
-                      <SelectItem value="developpememt">Développement Web</SelectItem>
+                      <SelectItem value="developpememt">
+                        Développement Web
+                      </SelectItem>
                       <SelectItem value="frontend">Design Front-end</SelectItem>
-                      <SelectItem value="programmation">Programmation</SelectItem>
+                      <SelectItem value="programmation">
+                        Programmation
+                      </SelectItem>
                       <SelectItem value="backend">Backend</SelectItem>
                       <SelectItem value="api">API</SelectItem>
-                      <SelectItem value="logicielle">Qualité logicielle</SelectItem>
+                      <SelectItem value="logicielle">
+                        Qualité logicielle
+                      </SelectItem>
                       <SelectItem value="devops">DevOps</SelectItem>
                     </SelectContent>
                   </Select>
@@ -216,7 +245,11 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
               <div className="space-y-4">
                 {imagePreviewUrl && (
                   <div className="relative w-full h-48 rounded-md overflow-hidden border border-border/50 shadow-inner">
-                    <img src={imagePreviewUrl} alt="Aperçu" className="w-full h-full object-cover" />
+                    <img
+                      src={imagePreviewUrl}
+                      alt="Aperçu"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 )}
                 <div className="flex items-center justify-center w-full">
@@ -227,9 +260,13 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <Upload className="w-8 h-8 mb-2 text-primary" />
                       <p className="mb-2 text-sm font-medium">
-                        <span className="text-primary">Cliquez pour uploader</span>
+                        <span className="text-primary">
+                          Cliquez pour uploader
+                        </span>
                       </p>
-                      <p className="text-xs text-muted-foreground">PNG, JPG ou GIF (max 5MB)</p>
+                      <p className="text-xs text-muted-foreground">
+                        PNG, JPG ou GIF (max 5MB)
+                      </p>
                     </div>
                     <Input
                       id="imageUpload"
@@ -254,7 +291,11 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
               <div className="space-y-4">
                 {videoPreviewUrl && (
                   <div className="relative w-full h-48 rounded-md overflow-hidden border border-border/50 shadow-inner">
-                    <video src={videoPreviewUrl} controls className="w-full h-full object-cover" />
+                    <video
+                      src={videoPreviewUrl}
+                      controls
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 )}
                 <div className="flex items-center justify-center w-full">
@@ -265,9 +306,13 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <Upload className="w-8 h-8 mb-2 text-primary" />
                       <p className="mb-2 text-sm font-medium">
-                        <span className="text-primary">Cliquez pour uploader</span>
+                        <span className="text-primary">
+                          Cliquez pour uploader
+                        </span>
                       </p>
-                      <p className="text-xs text-muted-foreground">MP4 (max 50MB)</p>
+                      <p className="text-xs text-muted-foreground">
+                        MP4 (max 50MB)
+                      </p>
                     </div>
                     <Input
                       id="videoUpload"
@@ -296,7 +341,9 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
               className="bg-primary hover:bg-primary/90 transition-colors"
               disabled={isLoading} // Désactiver le bouton pendant le chargement
             >
-              {isLoading ? "Envoi en cours..." : "Envoyer à MGIT Service votre webinaire"}
+              {isLoading
+                ? "Envoi en cours..."
+                : "Envoyer à MGIT Service votre webinaire"}
             </Button>
           </DialogFooter>
         </form>

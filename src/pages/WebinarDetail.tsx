@@ -2,31 +2,24 @@ import { Layout } from "@/components/layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import { webinars } from "@/data/mockData";
 import {
-  Calendar,
-  Clock,
-  Users,
   Video,
   ArrowLeft,
-  Share2,
-  MessageCircle,
-  Download,
   Play,
   Pause,
   Volume2,
   VolumeX,
+  Maximize2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
+  CardHeader, 
   CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
 
 const WebinarDetail = () => {
@@ -88,6 +81,34 @@ const WebinarDetail = () => {
     setCurrentTime(newTime);
     if (videoRef.current) {
       videoRef.current.currentTime = newTime;
+    }
+  };
+
+  // Fonction pour avancer de 5 secondes
+  const skipForward = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime += 5;
+    }
+  };
+
+  // Fonction pour reculer de 5 secondes
+  const skipBackward = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = Math.max(videoRef.current.currentTime - 5, 0);
+    }
+  };
+
+  // Fonction pour basculer en mode plein écran
+  const toggleFullScreen = () => {
+    if (videoRef.current) {
+      if (!document.fullscreenElement) {
+        videoRef.current.requestFullscreen().catch((error) => {
+          toast.error("Impossible d'activer le mode plein écran");
+          console.error("Erreur plein écran:", error);
+        });
+      } else {
+        document.exitFullscreen();
+      }
     }
   };
 
@@ -169,9 +190,35 @@ const WebinarDetail = () => {
                           <Volume2 className="h-5 w-5" />
                         )}
                       </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-primary"
+                        onClick={skipBackward}
+                      >
+                        <span className="text-xs">-5s</span>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-primary"
+                        onClick={skipForward}
+                      >
+                        <span className="text-xs">+5s</span>
+                      </Button>
                       <span className="text-xs text-white">
                         {formatTime(currentTime)} / {formatTime(duration)}
                       </span>
+                    </div>
+                    <div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-primary"
+                        onClick={toggleFullScreen}
+                      >
+                        <Maximize2 className="h-5 w-5" />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -187,25 +234,6 @@ const WebinarDetail = () => {
               <h1 className="text-3xl font-bold tracking-tight mt-2">
                 {webinar.title}
               </h1>
-
-              <div className="flex flex-wrap items-center gap-6 mt-4">
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">{webinar.date}</span>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">
-                    {webinar.time} · {webinar.duration}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="text-sm">
-                    {webinar.attendees} participants
-                  </span>
-                </div>
-              </div>
             </div>
 
             <Separator className="my-6" />
@@ -224,34 +252,7 @@ const WebinarDetail = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Intervenant</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center space-x-4">
-                  <Avatar className="h-14 w-14">
-                    <AvatarImage
-                      src={`https://i.pravatar.cc/150?u=${webinar.presenter}`}
-                    />
-                    <AvatarFallback>
-                      {webinar.presenter.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{webinar.presenter}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {webinar.category}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Participer au webinaire</CardTitle>
-                <CardDescription>
-                  Rejoignez ce webinaire et accédez au contenu
-                </CardDescription>
+                <CardTitle>Regarder le webinaire</CardTitle>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" onClick={togglePlay}>
@@ -287,9 +288,6 @@ const WebinarDetail = () => {
                       <div className="overflow-hidden">
                         <p className="font-medium text-sm line-clamp-1">
                           {relatedWebinar.title}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {relatedWebinar.date}
                         </p>
                       </div>
                     </div>
