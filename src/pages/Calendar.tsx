@@ -31,9 +31,6 @@ const CalendarPage = () => {
     return [];
   };
 
-  // Obtenir le webinaire en cours (s'il y en a un)
-  const currentWebinar = webinars.find((w) => w.status === "live");
-
   // Fonction pour naviguer entre les jours en vue quotidienne
   const navigateDay = (direction: number) => {
     if (date) {
@@ -180,11 +177,7 @@ const CalendarPage = () => {
                       </h3>
                       <div className="grid grid-cols-1 gap-4">
                         {getWebinarsForDate(date).map((webinar) => (
-                          <WebinarCard
-                            key={webinar.id}
-                            {...webinar}
-                            className="w-full"
-                          />
+                          <WebinarCard webinar={webinar} />
                         ))}
                       </div>
                     </div>
@@ -205,13 +198,15 @@ const CalendarPage = () => {
 
         {/* Webinaires à venir */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Suggestion de thème de webinaire</h2>
+          <h2 className="text-xl font-semibold">
+            Suggestion de thème de webinaire
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {webinars
               .filter((webinar) => webinar.status === "upcoming")
               .slice(0, 3)
               .map((webinar) => (
-                <WebinarCard key={webinar.id} {...webinar} />
+                <WebinarCard webinar={webinar} />
               ))}
           </div>
         </div>

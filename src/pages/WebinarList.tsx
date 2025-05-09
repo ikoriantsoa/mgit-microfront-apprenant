@@ -27,9 +27,7 @@ interface Webinar {
   description: string;
 }
 
-const getAllWeb = async (
-  token: string
-): Promise<{ decryptWebinaire: Webinar[] }> => {
+const getAllWeb = async (token: string) => {
   try {
     const response = await axios.get(
       "http://localhost:3000/talentApprenant/allWebinaire",
@@ -39,7 +37,10 @@ const getAllWeb = async (
         },
       }
     );
-    return response.data;
+    const data = response.data;
+    console.log("data: ", data);
+
+    return data;
   } catch (error) {
     console.error("Error fetching webinars:", error);
     throw error;
@@ -232,12 +233,7 @@ const WebinarList = () => {
         {filteredWebinars.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredWebinars.map((webinar) => (
-              <WebinarCard
-                key={webinar.id}
-                webinar={webinar}
-                onEdit={() => openEditForm(webinar)}
-                onDelete={() => handleDeleteWebinar(webinar.id)}
-              />
+              <WebinarCard key={webinar.webinaireId} webinar={webinar} />
             ))}
           </div>
         ) : (

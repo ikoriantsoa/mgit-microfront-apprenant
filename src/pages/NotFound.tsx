@@ -19,7 +19,7 @@ const NotFound = () => {
         <div className="flex justify-center">
           <div className="relative">
             <div className="h-40 w-40 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-7xl font-bold text-primary">404</span>
+              <span className="text-7xl font-bold text-[#74c9b2]">404</span>
             </div>
             <div className="absolute -top-2 -right-2 h-10 w-10 rounded-full bg-red-500 text-white flex items-center justify-center animate-bounce">
               !
@@ -34,7 +34,7 @@ const NotFound = () => {
         </p>
         
         <div className="pt-4">
-          <Button asChild>
+          <Button asChild className="bg-[#74c9b2] hover:text-[#74c9b2] hover:bg-[#f2f0f1]">
             <Link to="/">Retourner à l'accueil</Link>
           </Button>
         </div>

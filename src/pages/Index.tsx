@@ -37,12 +37,12 @@ const Dashboard = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Webinaires récents</h2>
               <Button variant="link" asChild className="text-[#74c9b2]">
-                <Link to="/webinars">Voir tous les webinaires</Link>
+                <Link to="/webinaires">Voir tous les webinaires</Link>
               </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {recentWebinars.map((webinar) => (
-                <WebinarCard key={webinar.id} {...webinar} />
+                <WebinarCard webinar={webinar} />
               ))}
             </div>
           </div>
