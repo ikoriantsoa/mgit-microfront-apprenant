@@ -1,74 +1,67 @@
 import { format, isValid } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { webinars } from "@/data/mockData";
 
 const API_KEY = "";
 
 interface WebinarCardProps {
-  id: string;
-  title: string;
-  presenter: string;
-  description?: string; 
-  date: Date | string;
-  duration: number | string;
-  category: string;
-  imageUrl?: string;
-  thumbnailUrl?: string;
-  className?: string;
+  // id: string;
+  // title: string;
+  // presenter: string;
+  // description?: string;
+  // date: Date | string;
+  // duration: number | string;
+  // category: string;
+  // imageUrl?: string;
+  // thumbnailUrl?: string;
+  // className?: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  webinar: any;
 }
 
-export function WebinarCard({ 
-  id,
-  title, 
-  presenter, 
-  description, 
-  date, 
-  duration, 
-  category, 
-  imageUrl,
-  thumbnailUrl,
-  className,
-}: WebinarCardProps) {
+export function WebinarCard({ webinar, onDelete, onEdit }: WebinarCardProps) {
+  console.log(webinar);
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  
+
   let webinarDate: Date;
-  if (date instanceof Date) {
-    webinarDate = date;
+  if (webinar.date instanceof Date) {
+    webinarDate = webinar.date;
   } else {
-    webinarDate = new Date(date);
+    webinarDate = new Date(webinar.date);
   }
 
   let dateFormatted = "Date invalide";
   let timeFormatted = "--:--";
-  
+
   if (isValid(webinarDate)) {
     try {
-      dateFormatted = format(webinarDate, 'dd MMMM yyyy', { locale: fr });
-      timeFormatted = format(webinarDate, 'HH:mm', { locale: fr });
+      dateFormatted = format(webinarDate, "dd MMMM yyyy", { locale: fr });
+      timeFormatted = format(webinarDate, "HH:mm", { locale: fr });
     } catch (error) {
-      console.error("Error formatting date:", error, "Date value:", date);
+      console.error(
+        "Error formatting date:",
+        error,
+        "Date value:",
+        webinar.date
+      );
     }
   } else {
-    console.warn("Invalid date value:", date);
+    console.warn("Invalid date value:", webinar.date);
   }
-  
-  const displayImage = imageUrl || thumbnailUrl || '/placeholder.svg';
-  
+
+  const displayImage =
+    webinar.imageUrl || webinar.thumbnailUrl || "/placeholder.svg";
+
   // Naviguer vers la page détaillée quand on clique sur la carte
   const handleCardClick = () => {
-    navigate(`/webinaire/${id}`);
+    navigate(`/webinaire/${webinar.id}`);
     speakWebinar();
   };
 
@@ -84,16 +77,16 @@ export function WebinarCard({
 
   // Fonction pour créer le texte à lire
   const getTextToSpeak = () => {
-    let text = `${title}. Présenté par ${presenter}.`;
-    
-    if (description) {
-      text += ` Description: ${description}.`;
+    let text = `${webinar.title}. Présenté par ${webinar.presenter}.`;
+
+    if (webinar.description) {
+      text += ` Description: ${webinar.description}.`;
     }
-    
+
     text += ` Ce webinaire aura lieu le ${dateFormatted} à ${timeFormatted}.`;
-    text += ` La durée prévue est de ${duration}.`;
-    text += ` Catégorie: ${category}.`;
-    
+    text += ` La durée prévue est de ${webinar.duration}.`;
+    text += ` Catégorie: ${webinar.category}.`;
+
     return text;
   };
 
@@ -102,7 +95,7 @@ export function WebinarCard({
     if (e) {
       e.stopPropagation();
     }
-    
+
     if (!API_KEY) {
       return;
     }
@@ -143,11 +136,11 @@ export function WebinarCard({
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
       const newAudio = new Audio(audioUrl);
-      
+
       newAudio.onended = () => {
         setIsPlaying(false);
       };
-      
+
       newAudio.onerror = () => {
         setIsPlaying(false);
         toast.error("Erreur lors de la lecture audio");
@@ -155,36 +148,40 @@ export function WebinarCard({
 
       setAudio(newAudio);
       newAudio.play();
-
     } catch (error) {
       console.error("Erreur de synthèse vocale:", error);
       toast.error("Erreur lors de la génération de l'audio");
       setIsPlaying(false);
     }
   };
-  
+
   return (
     <>
-      <Card 
-        className={`overflow-hidden hover:shadow-md transition-shadow group ${className || ''} cursor-pointer`}
+      <Card
+        className={`overflow-hidden hover:shadow-md transition-shadow group ${
+          webinar.className || ""
+        } cursor-pointer`}
         onClick={handleCardClick}
       >
         <div className="relative h-40 overflow-hidden">
           <img
-            src={displayImage}
-            alt={title}
+            src={webinar.image}
+            alt={webinar.titre}
             className="w-full h-full object-cover transition-transform group-hover:scale-105"
           />
         </div>
-        
+
         <CardHeader className="p-4 pb-2">
-          <div className="flex items-center justify-between">
-          </div>
-          <CardTitle className="text-lg line-clamp-2 h-12">{title}</CardTitle>
+          <div className="flex items-center justify-between"></div>
+          <CardTitle className="text-lg line-clamp-2 h-12">
+            {webinar.titre}
+          </CardTitle>
         </CardHeader>
-        
+
         <CardContent className="p-4 pt-0">
-          <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
+          <p className="text-sm text-muted-foreground line-clamp-3">
+            {webinar.description}
+          </p>
         </CardContent>
       </Card>
     </>

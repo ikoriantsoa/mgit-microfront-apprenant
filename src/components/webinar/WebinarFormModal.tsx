@@ -23,6 +23,8 @@ import {
 } from "../ui/select";
 import { useMutation } from "@tanstack/react-query";
 
+import keycloak from "../../keycloak/keycloak";
+
 interface WebinarFormModalProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -47,6 +49,9 @@ export function WebinarFormModal({ isOpen, setIsOpen }: WebinarFormModalProps) {
         {
           method: "POST",
           body: formDataToSend,
+          headers: {
+            Authorization: `Bearer ${keycloak.token}`,
+          },
         }
       );
 

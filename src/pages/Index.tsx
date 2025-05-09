@@ -23,11 +23,11 @@ const Dashboard = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button asChild>
-              <Link to="/webinars">Tous les webinaires</Link>
+            <Button asChild className="bg-[#74c9b2] hover:bg-[#f2f0f1] hover:text-[#74c9b2]">
+              <Link to="/webinaires">Tous les webinaires</Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link to="/calendar">Calendrier</Link>
+            <Button asChild className="bg-[#74c9b2] hover:bg-[#f2f0f1] hover:text-[#74c9b2]">
+              <Link to="/calendrier">Calendrier</Link>
             </Button>
           </div>
         </div>
@@ -36,7 +36,7 @@ const Dashboard = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Webinaires récents</h2>
-              <Button variant="link" asChild>
+              <Button variant="link" asChild className="text-[#74c9b2]">
                 <Link to="/webinars">Voir tous les webinaires</Link>
               </Button>
             </div>

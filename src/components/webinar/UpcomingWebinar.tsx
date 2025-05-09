@@ -11,7 +11,7 @@ interface UpcomingWebinarProps {
 export function UpcomingWebinar({ title }: UpcomingWebinarProps) {
   return (
     <div className="flex items-center gap-4 p-3 rounded-lg border border-border bg-card/60 hover:bg-card transition-colors group">
-      <div className="flex-shrink-0 h-12 w-12 rounded-md bg-primary flex items-center justify-center text-primary-foreground">
+      <div className="flex-shrink-0 h-12 w-12 rounded-md bg-primary flex items-center justify-center text-primary-foreground bg-[#74c9b2]">
         <Calendar className="h-6 w-6" />
       </div>
       <div className="flex-grow min-w-0">

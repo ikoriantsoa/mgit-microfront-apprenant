@@ -9,12 +9,9 @@ import {
   LayoutDashboard,
   Video,
   Calendar,
+  X,
 } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface SidebarProps {
   className?: string;
@@ -63,26 +60,16 @@ export function Sidebar({ className }: SidebarProps) {
   const SidebarContent = ({ isMobile }: { isMobile?: boolean }) => (
     <>
       {/* En-tête */}
-      <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
+      <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border bg-[#f0f2f1]">
         <Link to="/">
           <div
             className={cn(
-              " items-center gap-3",
+              "items-center gap-3",
               collapsed && !isMobile ? "justify-center w-full" : ""
             )}
           >
             {!collapsed || isMobile ? (
-              <div className="h-14 w-14 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary flex items-center justify-center shadow-inner">
-                <img
-                  src="public/f64815e6-3df2-40f5-90df-32208f468511.jpeg"
-                  alt="Logo"
-                />
-              </div>
-            ) : null}
-            {!collapsed || isMobile ? (
-              <span className="text-xl font-bold text-sidebar-foreground text-blue-900">
-                TalentUp
-              </span>
+              <span className="text-2xl font-bold">TalentUp</span>
             ) : null}
           </div>
         </Link>
@@ -93,19 +80,30 @@ export function Sidebar({ className }: SidebarProps) {
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="text-sidebar-foreground hidden md:flex"
+            className="text-sidebar-foreground hidden md:flex hover:bg-[#74c9b2]"
           >
             {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
+              <Menu className="h-4 w-4" />
             ) : (
-              <ChevronLeft className="h-4 w-4" />
+              <X className="h-4 w-4" />
             )}
           </Button>
         )}
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 p-2 space-y-1 overflow-y-auto">
+      <div className="flex-1 p-2 space-y-1 overflow-y-auto bg-[#f0f2f1]">
+        {(!collapsed) && <div>
+          <div className="mx-auto h-28 w-28 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary flex items-center justify-center shadow-inner">
+          <img
+            src="public/f64815e6-3df2-40f5-90df-32208f468511.jpeg"
+            alt="Logo"
+          />
+        </div>
+        <h2 className="mx-auto h-24 w-24 overflow-hidden items-center justify-center shadow-inner p-2 font-semibold text-lg">
+          Apprenant
+        </h2>
+          </div>}
         {navItems.map((item) => {
           const isActive =
             location.pathname === item.href ||
@@ -120,10 +118,10 @@ export function Sidebar({ className }: SidebarProps) {
                 }
               }}
               className={cn(
-                "flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-300 ease-in-out relative",
-                "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                "flex items-center rounded-md px-3 py-4 text-md font-medium transition-all duration-300 ease-in-out relative",
+                "text-sidebar-foreground hover:bg-[#74c9b2] hover:text-[#f2f0f1]",
                 isActive
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-sm"
+                  ? "bg-[#f2f0f1] text-[#74c9b2] font-medium shadow-sm"
                   : "",
                 collapsed && !isMobile ? "justify-center" : "justify-start"
               )}
@@ -132,13 +130,13 @@ export function Sidebar({ className }: SidebarProps) {
                 className={cn(
                   "h-5 w-5 transition-transform duration-300 ease-in-out",
                   collapsed && !isMobile ? "mx-auto" : "mr-3",
-                  isActive ? "text-primary scale-125" : ""
+                  isActive ? "scale-125" : ""
                 )}
               />
               {(isMobile || !collapsed) && (
                 <span
                   className={cn(
-                    "truncate transition-opacity duration-300 ease-in-out",
+                    "truncate transition-opacity duration-300 ease-in-out font-bold text-md",
                     collapsed && !isMobile && !isActive
                       ? "opacity-0 absolute left-full ml-2 bg-background p-1 rounded-md shadow-md"
                       : "opacity-100"
@@ -161,7 +159,7 @@ export function Sidebar({ className }: SidebarProps) {
         variant="ghost"
         size="icon"
         onClick={() => setMobileOpen(true)}
-        className="fixed top-4 left-4 z-50 md:hidden bg-background/80 backdrop-blur-sm"
+        className="fixed top-4 left-4 z-50 md:hidden hover:bg-[#74c9b2] backdrop-blur-sm"
       >
         <Menu className="h-5 w-5" />
         <span className="sr-only">Ouvrir le menu</span>
@@ -173,12 +171,15 @@ export function Sidebar({ className }: SidebarProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm"
+            className="md:hidden fixed top-4 left-4 z-50 hover:bg-[#74c9b2] backdrop-blur-sm"
           >
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-0 bg-sidebar border-sidebar-border w-64">
+        <SheetContent
+          side="left"
+          className="p-0 bg-sidebar border-sidebar-border w-64"
+        >
           <SidebarContent isMobile />
         </SheetContent>
       </Sheet>
@@ -186,7 +187,7 @@ export function Sidebar({ className }: SidebarProps) {
       {/* Barre latérale pour desktop */}
       <div
         className={cn(
-          "hidden md:flex flex-col bg-sidebar border-r border-sidebar-border h-screen sticky top-0",
+          "hidden md:flex flex-col border-r border-sidebar-border h-screen sticky top-0 bg-[#f2f0f1]",
           collapsed ? "w-16" : "w-64",
           "transition-all duration-300 ease-in-out",
           className

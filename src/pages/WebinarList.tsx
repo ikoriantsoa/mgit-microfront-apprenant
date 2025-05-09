@@ -16,143 +16,128 @@ import { WebinarFormModal } from "@/components/webinar/WebinarFormModal";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import axios from "axios";
+import keycloak from "../../src/keycloak/keycloak";
 
-// Données mockées fournies
-const mockWebinars = [
-  {
-    id: "1",
-    title: "Introduction à React pour débutants",
-    category: "Développement Web",
-    thumbnailUrl: "public/f64815e6-3df2-40f5-90df-32208f468511.jpeg",
-    description:
-      "Apprenez les fondamentaux de React, de la création de composants à la gestion d'état.",
-  },
-  {
-    id: "2",
-    title: "Maîtriser Tailwind CSS en entreprise",
-    category: "Design Front-end",
-    thumbnailUrl: "public/tailwind.png",
-    description:
-      "Découvrez les meilleures pratiques pour utiliser Tailwind CSS dans vos projets d'entreprise, avec des conseils pour l'organisation du code et l'optimisation des performances.",
-  },
-  {
-    id: "3",
-    title: "TypeScript Avancé pour les équipes de développement",
-    category: "Programmation",
-    thumbnailUrl: "public/typescriptAvancée.webp",
-    description:
-      "Ce webinaire aborde les fonctionnalités avancées de TypeScript : génériques, types conditionnels, inférence de types et stratégies pour améliorer la qualité du code dans les grandes bases de code.",
-  },
-  {
-    id: "4",
-    title: "API RESTful avec Node.js et Express",
-    category: "Backend",
-    thumbnailUrl: "public/nodejsAPI.png",
-    description:
-      "Créez des API RESTful robustes avec Node.js et Express. Nous couvrirons la structure des routes, la validation des données, l'authentification et la documentation.",
-  },
-  {
-    id: "5",
-    title: "Optimisation des performances React",
-    category: "Développement Web",
-    thumbnailUrl: "public/reactPerformance.jpeg",
-    description:
-      "Améliorez les performances de vos applications React avec des techniques avancées : memoization, code splitting, lazy loading, et optimisation du rendu.",
-  },
-  {
-    id: "6",
-    title: "Introduction à GraphQL",
-    category: "API",
-    thumbnailUrl: "public/graphql.png",
-    description:
-      "Découvrez comment GraphQL peut remplacer les API REST traditionnelles avec un modèle plus efficace et flexible pour les requêtes de données.",
-  },
-  {
-    id: "7",
-    title: "Tests automatisés avec Jest et React Testing Library",
-    category: "Qualité logicielle",
-    thumbnailUrl: "public/reactTestingLibraire.jpeg",
-    description:
-      "Apprenez à mettre en place une stratégie de tests efficace pour vos applications React avec Jest et React Testing Library.",
-  },
-  {
-    id: "8",
-    title: "Déploiement continu avec GitHub Actions",
-    category: "DevOps",
-    thumbnailUrl: "public/githubActions.jpeg",
-    description:
-      "Automatisez vos workflows de développement avec GitHub Actions pour des déploiements fluides et sans erreur.",
-  },
-];
+interface Webinar {
+  id: string;
+  title: string;
+  category: string;
+  thumbnailUrl: string;
+  description: string;
+}
 
-// Fonction simulant un appel API fictif
-const fetchWebinars = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simuler un délai réseau
-  return mockWebinars; // Retourner les données mockées
+const getAllWeb = async (
+  token: string
+): Promise<{ decryptWebinaire: Webinar[] }> => {
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/talentApprenant/allWebinaire",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching webinars:", error);
+    throw error;
+  }
 };
 
 const WebinarList = () => {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [webinarToEdit, setWebinarToEdit] = useState(null);
+  const [webinarToEdit, setWebinarToEdit] = useState<Webinar | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Utilisation de React Query pour récupérer les webinaires
   const {
-    data: webinarsList = [],
+    data: webinarsData = { decryptWebinaire: [] },
     isLoading,
+    isError,
     error,
   } = useQuery({
     queryKey: ["webinars"],
-    queryFn: fetchWebinars,
+    queryFn: async () => {
+      if (!keycloak?.token) {
+        throw new Error("No authentication token available");
+      }
+      return await getAllWeb(keycloak.token);
+    },
   });
 
-  if (error) {
+  // États de chargement et d'erreur
+  if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center space-y-4">
-        <img src="/error-icon.png" alt="Erreur" className="w-20 h-20" />
-        <h2 className="text-xl font-semibold">
-          Erreur lors du chargement des webinaires.
-        </h2>
-        <p className="text-muted-foreground">
-          Veuillez réessayer plus tard ou vérifier votre connexion.
-        </p>
-      </div>
+      <Layout>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {[...Array(6)].map((_, index) => (
+            <Skeleton key={index} className="h-[200px] rounded-lg" />
+          ))}
+        </div>
+      </Layout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center h-screen text-center space-y-4">
+          <img src="/error-icon.png" alt="Erreur" className="w-20 h-20" />
+          <h2 className="text-xl font-semibold">
+            Erreur lors du chargement des webinaires.
+          </h2>
+          <p className="text-muted-foreground">
+            {error.message ||
+              "Veuillez réessayer plus tard ou vérifier votre connexion."}
+          </p>
+        </div>
+      </Layout>
     );
   }
 
   // Obtenir les catégories uniques pour le filtre
   const categories = Array.from(
-    new Set(webinarsList.map((webinar) => webinar.category))
+    new Set(webinarsData.decryptWebinaire.map((webinar) => webinar.category))
   );
 
-  // Filtrer les webinaires en fonction des critères de recherche
-  const filteredWebinars = webinarsList.filter((webinar) => {
-    const matchesSearch = webinar.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesCategory =
-      categoryFilter === "all" || webinar.category === categoryFilter;
-    const matchesStatus = statusFilter === "all";
+  console.log(webinarsData.decryptWebinaire);
+  // Filtrer les webinaires
+  // const filteredWebinars = webinarsData.decryptWebinaire.filter((webinar) => {
+  //   // Vérifier que webinar et webinar.title existent
+  //   if (!webinar || !webinar.title) return false;
 
-    return matchesSearch && matchesCategory && matchesStatus;
-  });
+  //   const matchesSearch = webinar.title
+  //     .toLowerCase()
+  //     .includes(search.toLowerCase());
+  //   // const matchesCategory =
+  //   //   categoryFilter === "all" || webinar.category === categoryFilter;
+  //   // const matchesStatus = statusFilter === "all";
 
-  const handleAddWebinar = (newWebinar) => {
+  //   // return matchesSearch && matchesCategory && matchesStatus;
+  //   return matchesSearch;
+  // });
+
+  const filteredWebinars = webinarsData.decryptWebinaire;
+
+  console.log(filteredWebinars);
+
+  const handleAddWebinar = (newWebinar: Webinar) => {
     console.log("Nouveau webinaire ajouté :", newWebinar);
     toast.success("Webinaire ajouté avec succès!");
     setIsFormOpen(false);
   };
 
-  const handleUpdateWebinar = (updatedWebinar) => {
+  const handleUpdateWebinar = (updatedWebinar: Webinar) => {
     console.log("Webinaire mis à jour :", updatedWebinar);
     toast.success("Webinaire mis à jour avec succès!");
     setIsFormOpen(false);
   };
 
-  const handleDeleteWebinar = (id) => {
+  const handleDeleteWebinar = (id: string) => {
     console.log("Webinaire supprimé :", id);
     toast.success("Webinaire supprimé avec succès!");
   };
@@ -162,7 +147,7 @@ const WebinarList = () => {
     setIsFormOpen(true);
   };
 
-  const openEditForm = (webinar) => {
+  const openEditForm = (webinar: Webinar) => {
     setWebinarToEdit(webinar);
     setIsFormOpen(true);
   };
@@ -244,18 +229,12 @@ const WebinarList = () => {
         </div>
 
         {/* Résultats */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {[...Array(6)].map((_, index) => (
-              <Skeleton key={index} className="h-[200px] rounded-lg" />
-            ))}
-          </div>
-        ) : filteredWebinars.length > 0 ? (
+        {filteredWebinars.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredWebinars.map((webinar) => (
               <WebinarCard
                 key={webinar.id}
-                {...webinar}
+                webinar={webinar}
                 onEdit={() => openEditForm(webinar)}
                 onDelete={() => handleDeleteWebinar(webinar.id)}
               />
@@ -275,7 +254,6 @@ const WebinarList = () => {
         )}
       </div>
 
-      {/* Modal pour ajouter/éditer un webinaire */}
       <WebinarFormModal
         isOpen={isFormOpen}
         setIsOpen={setIsFormOpen}
