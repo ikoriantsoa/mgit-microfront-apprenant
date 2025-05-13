@@ -39,7 +39,7 @@ const App = () => (
               }
             />
             <Route
-              path="/webinaire/:id"
+              path="/webinaire/:webinaireId"
               element={
                 <PrivateRoute roles={["apprenant", "admin"]}>
                   <WebinarDetail />

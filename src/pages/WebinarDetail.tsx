@@ -12,22 +12,57 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader, 
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import keycloak from "@/keycloak/keycloak";
 
 const WebinarDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { webinaireId } = useParams();
+  const keycloakId = keycloak.tokenParsed?.sub;
   const navigate = useNavigate();
 
-  // Trouver le webinaire correspondant à l'ID
-  const webinar = webinars.find((w) => w.id === id);
+  const getWebinaire = async (token: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/talentApprenant/getWebinaire/${keycloakId}/${webinaireId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.error("Error de récupération du webinaire", error);
+      throw Error;
+    }
+  };
+
+  const {
+    data: webinaire = { decryptWebinaire: [] },
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["webinaire"],
+    queryFn: async () => {
+      if (!keycloak.token) {
+        throw new Error("Pas de token disponible");
+      }
+      console.log("webinaire: ", webinaire);
+
+      return await getWebinaire(keycloak.token);
+    },
+  });
+
+  const web = webinaire;
 
   // États pour le lecteur vidéo
   const [isPlaying, setIsPlaying] = useState(false);
@@ -35,12 +70,6 @@ const WebinarDetail = () => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Si le webinaire n'existe pas, rediriger vers la page 404
-  if (!webinar) {
-    navigate("/404", { replace: true });
-    return null;
-  }
 
   // Fonctions de contrôle pour le lecteur vidéo
   const togglePlay = () => {
@@ -94,7 +123,10 @@ const WebinarDetail = () => {
   // Fonction pour reculer de 5 secondes
   const skipBackward = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime = Math.max(videoRef.current.currentTime - 5, 0);
+      videoRef.current.currentTime = Math.max(
+        videoRef.current.currentTime - 5,
+        0
+      );
     }
   };
 
@@ -135,19 +167,17 @@ const WebinarDetail = () => {
               <video
                 ref={videoRef}
                 className="w-full aspect-video object-contain"
-                poster={webinar.thumbnailUrl}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
                 onEnded={() => setIsPlaying(false)}
               >
                 {/* Utilisez une URL de vidéo de démonstration ou celle du webinaire si disponible */}
                 <source
-                  src="https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4"
+                  src={`http://localhost:5000/uploads/${web.source}`}
                   type="video/mp4"
                 />
                 Votre navigateur ne prend pas en charge la lecture vidéo.
               </video>
-
               {/* Contrôles vidéo personnalisés */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                 <div className="flex flex-col space-y-2">
@@ -228,11 +258,11 @@ const WebinarDetail = () => {
             <div className="mt-4">
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="mb-2">
-                  {webinar.category}
+                  {web.categorie}
                 </Badge>
               </div>
               <h1 className="text-3xl font-bold tracking-tight mt-2">
-                {webinar.title}
+                {web.titre}
               </h1>
             </div>
 
@@ -242,7 +272,7 @@ const WebinarDetail = () => {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Description</h2>
               <p className="text-muted-foreground">
-                {webinar.description ||
+                {web.description ||
                   "Aucune description disponible pour ce webinaire."}
               </p>
             </div>
@@ -269,14 +299,16 @@ const WebinarDetail = () => {
                 {webinars
                   .filter(
                     (w) =>
-                      w.category === webinar.category && w.id !== webinar.id
+                      w.category === web.categorie && w.id !== web.webinaireId
                   )
                   .slice(0, 3)
                   .map((relatedWebinar) => (
                     <div
                       key={relatedWebinar.id}
                       className="flex items-center gap-3 hover:bg-muted/50 p-2 rounded-md cursor-pointer"
-                      onClick={() => navigate(`/webinars/${relatedWebinar.id}`)}
+                      onClick={() =>
+                        navigate(`/webinaire/${relatedWebinar.id}`)
+                      }
                     >
                       <div className="h-12 w-12 rounded overflow-hidden bg-muted flex-shrink-0">
                         <img

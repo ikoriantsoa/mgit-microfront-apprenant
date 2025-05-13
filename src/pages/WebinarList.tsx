@@ -64,7 +64,7 @@ const WebinarList = () => {
     queryKey: ["webinars"],
     queryFn: async () => {
       if (!keycloak?.token) {
-        throw new Error("No authentication token available");
+        throw new Error("Pas de token disponible");
       }
       return await getAllWeb(keycloak.token);
     },
